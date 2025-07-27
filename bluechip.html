@@ -4,156 +4,70 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Deep1 | Blue Chip Pack</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background-color: #f4f6f8;
-      font-family: 'Segoe UI', sans-serif;
-    }
-    .container {
-      max-width: 400px;
-      margin: 40px auto;
-      background-color: white;
-      border-radius: 16px;
-      padding: 32px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    }
-    h2 {
-      text-align: center;
-      margin-bottom: 10px;
-    }
-    .price {
-      text-align: center;
-      color: green;
-      font-weight: bold;
-      font-size: 1.2em;
-      margin-bottom: 20px;
-    }
-    input, label {
-      display: block;
-      width: 100%;
-      margin-bottom: 16px;
-      font-size: 0.95em;
-    }
-    input[type="text"], input[type="email"], input[type="tel"] {
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-    }
-    input[type="checkbox"] {
-      display: inline-block;
-      width: auto;
-      margin-right: 8px;
-    }
-    .terms {
-      font-size: 0.9em;
-    }
-    .pay-btn, .activate-btn {
-      width: 100%;
-      padding: 12px;
-      border: none;
-      background-color: #10b981;
-      color: white;
-      border-radius: 8px;
-      font-size: 1em;
-      cursor: pointer;
-    }
-    .step-box {
-      border: 2px dashed #ccc;
-      border-radius: 8px;
-      padding: 20px;
-      margin-top: 24px;
-      text-align: center;
-      display: none;
-    }
-    .done-msg {
-      display: none;
-      text-align: center;
-      margin-top: 20px;
-      color: green;
-      font-weight: bold;
-    }
-    a {
-      color: #6366f1;
-      text-decoration: none;
-    }
-  </style>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 </head>
-<body>
-  <div class="container">
-    <h2>Blue Chip Pack</h2>
-    <div class="price">₹29.00</div>
+<body class="bg-gray-100 font-sans">
+  <div class="max-w-md mx-auto mt-16 p-6 bg-white rounded-lg shadow-xl">
+    <h2 class="text-2xl font-bold text-center mb-2">Blue Chip Pack</h2>
+    <p class="text-green-600 text-center font-semibold mb-6">₹29.00</p>
 
-    <label>Name</label>
-    <input type="text" id="name" placeholder="Your full name" />
+    <form id="payment-form">
+      <label class="block mb-2 font-semibold">Name</label>
+      <input type="text" id="name" required class="w-full p-2 border rounded mb-4" value="JOY SANJAY MENDONSA">
 
-    <label>Email</label>
-    <input type="email" id="email" placeholder="your@email.com" />
+      <label class="block mb-2 font-semibold">Email</label>
+      <input type="email" id="email" required class="w-full p-2 border rounded mb-4" value="mendonsajoy02@gmail.com">
 
-    <label>Phone</label>
-    <input type="tel" id="phone" placeholder="10-digit number" />
+      <label class="block mb-2 font-semibold">Phone</label>
+      <input type="tel" id="phone" required class="w-full p-2 border rounded mb-4" value="7678092671">
 
-    <label class="terms">
-      <input type="checkbox" id="terms" /> I agree to all
-      <a href="https://yourterms.com" target="_blank">Terms and Conditions</a>
-    </label>
+      <label class="flex items-center mb-4">
+        <input type="checkbox" class="mr-2" checked required />
+        I agree to all <a href="#" class="text-blue-600 underline">Terms and Conditions</a>
+      </label>
 
-    <button class="pay-btn" id="payButton">Pay ₹29.00</button>
+      <button type="button" onclick="payNow()" class="w-full bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded">Pay ₹29.00</button>
+    </form>
 
-    <div id="step2" class="step-box">
-      <p>Step 2: Click to activate Bot</p>
-      <button class="activate-btn" onclick="showDone()">Activate Bot</button>
+    <div id="step2" class="bg-green-100 border-2 border-green-400 mt-6 p-4 text-center hidden">
+      <p class="font-semibold mb-2">Step 2: Click to activate Bot</p>
+      <a href="https://t.me/deep1_alertbot?start={{TOKEN_PLACEHOLDER}}" class="bg-green-600 text-white px-4 py-2 rounded">Activate Bot</a>
     </div>
 
-    <div id="done" class="done-msg">
-      ✅ You're all set! Deep1 Bot is now live for you.
+    <div id="done" class="bg-gray-100 border mt-4 p-4 text-center hidden">
+      <p class="text-green-700"><input type="checkbox" checked class="mr-2"/>You're all set! Deep1 Bot is now live for you.</p>
     </div>
   </div>
 
-  <!-- Razorpay Checkout Script -->
-  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <script>
-    document.getElementById("payButton").onclick = function (e) {
-      const name = document.getElementById("name").value;
-      const email = document.getElementById("email").value;
-      const phone = document.getElementById("phone").value;
-      const agreed = document.getElementById("terms").checked;
+    function payNow() {
+      var name = document.getElementById("name").value;
+      var email = document.getElementById("email").value;
+      var phone = document.getElementById("phone").value;
 
-      if (!name || !email || !phone || !agreed) {
-        alert("Please fill all fields and accept Terms.");
-        return;
-      }
-
-      const options = {
-        key: "rzp_test_lIFgtc9kFrLyfk", // ✅ Your Razorpay Test Key
-        amount: 2900, // ₹29.00 in paise
+      var options = {
+        key: "rzp_test_lIFgtc9kfRLyfk", // ✅ Use your real Razorpay test key here
+        amount: 2900, // ₹29 in paise
         currency: "INR",
-        name: "Deep1™",
-        description: "Blue Chip Pack Subscription",
+        name: "Deep1 Subscription",
+        description: "Blue Chip Pack - ₹29",
         prefill: {
           name: name,
           email: email,
           contact: phone
         },
         theme: {
-          color: "#3b82f6"
+          color: "#0f766e"
         },
         handler: function (response) {
-          // Payment success
-          document.getElementById("step2").style.display = "block";
-          console.log("Razorpay payment ID:", response.razorpay_payment_id);
+          // ✅ Payment successful → show Step 2
+          document.getElementById("step2").classList.remove("hidden");
+          // Optional: Replace {{TOKEN_PLACEHOLDER}} with logic from webhook later
         }
       };
-
-      const rzp = new Razorpay(options);
+      var rzp = new Razorpay(options);
       rzp.open();
-      e.preventDefault();
-    };
-
-    function showDone() {
-      document.getElementById("done").style.display = "block";
     }
   </script>
 </body>
