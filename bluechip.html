@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Deep1 | Blue Chip Pack</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f8f9fa;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 420px;
+      margin: 50px auto;
+      padding: 20px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 5px;
+    }
+    .price {
+      text-align: center;
+      color: #2b9348;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      margin-bottom: 5px;
+      font-weight: 500;
+    }
+    input[type="text"], input[type="email"] {
+      width: 100%;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+    .terms {
+      margin: 15px 0;
+      font-size: 14px;
+    }
+    .terms input {
+      margin-right: 6px;
+    }
+    button {
+      width: 100%;
+      margin-top: 15px;
+      background: #2b9348;
+      color: white;
+      border: none;
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+    .step-box {
+      margin-top: 30px;
+      padding: 12px;
+      border: 2px dashed #ccc;
+      border-radius: 8px;
+      background: #f0f0f0;
+      text-align: center;
+    }
+    .step-box.active {
+      border-color: #2b9348;
+      background: #e6ffe9;
+    }
+    .step-box a {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 10px 20px;
+      background: #2b9348;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Blue Chip Pack</h2>
+    <div class="price">₹29.00</div>
+    <form id="paymentForm">
+      <label>Name</label>
+      <input type="text" required />
+      <label>Email</label>
+      <input type="email" required />
+      <label>Phone</label>
+      <input type="text" required />
+      <div class="terms">
+        <input type="checkbox" id="agree" required /> I agree to all <a href="#">Terms and Conditions</a>
+      </div>
+      <button type="submit">Pay ₹29.00</button>
+    </form>
+
+    <div class="step-box" id="step2">
+      <p>Step 2: Click to activate Bot</p>
+      <a href="#" id="botLink">Activate Bot</a>
+    </div>
+
+    <div class="step-box" id="step3" style="display:none">
+      <p>✅ You're all set! Deep1 Bot is now live for you.</p>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("paymentForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      // Simulate payment verification (replace with Razorpay logic)
+      document.getElementById("step2").classList.add("active");
+    });
+
+    document.getElementById("botLink").addEventListener("click", function () {
+      document.getElementById("step3").style.display = "block";
+    });
+  </script>
+</body>
+</html>
